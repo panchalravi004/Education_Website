@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block content %}
+   <!-- PAGE TITLE
+    ================================================== -->
+    <header class="py-8 py-md-11" style="background-image: none;">
+        <div class="container text-center py-xl-2">
+            <h1 class="display-4 fw-semi-bold mb-0">User Profile</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-scroll justify-content-center">
+                    <li class="breadcrumb-item">
+                        <a class="text-gray-800" href="#">
+                            Home
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item text-gray-800 active" aria-current="page">
+                        Profile
+                    </li>
+                </ol>
+            </nav>
+        </div>
+        <!-- Img -->
+        <img class="d-none img-fluid" src="...html" alt="...">
+    </header>
+
+    
+    <!-- CONTACT
+    ================================================== -->
+    <div class="container ">
+        <div class="row row-cols-md-2 mb-8 mb-lg-11 d-flex justify-content-center bg-white p-2">
+            <div class="col-md">
+                <h1 class="mb-6">Update Your Profile Here !</h1>
+                {% include 'components/msg.html' %}
+                <form class="row" method="post" action=" {% url 'profile_update' %} ">
+                    {% csrf_token %}
+                    <div class="form-group mb-6 col-xl-6">
+                        <label for="exampleInputTitle1">First Name</label>
+                        <input type="text" class="form-control placeholder-1" id="exampleInputTitle1" name="first_name" placeholder="Enter First Name" value="{{user.first_name}}">
+                    </div>
+
+                    <div class="form-group mb-6 col-xl-6">
+                        <label for="exampleInputTitle2">Last Name</label>
+                        <input type="text" class="form-control placeholder-1" id="exampleInputTitle2" name="last_name" placeholder="Enter Last Name" value="{{user.last_name}}">
+                    </div>
+                    <div class="form-group mb-6 col-xl-6">
+                        <label for="exampleInputTitle1">Email Address</label>
+                        <input type="email" class="form-control placeholder-1" id="exampleInputTitle1" name="email" placeholder="Enter Email Address" value="{{user.email}}" readonly>
+                    </div>
+
+                    <div class="form-group mb-6 col-xl-6">
+                        <label for="exampleInputTitle2">User Name</label>
+                        <input type="text" class="form-control placeholder-1" id="exampleInputTitle2" name="username" placeholder="Enter User Name" value="{{user.username}}" readonly>
+                    </div>
+
+                    <div class="form-group mb-6 col-xl-12">
+                        <label for="exampleInputTitle2">Password</label>
+                        <input type="password" class="form-control placeholder-1" id="exampleInputTitle2" name="password" placeholder="Enter Password If you want to change" >
+                    </div>
+
+                    <div class="col-12 d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary btn-block mw-md-300p">Update Profile</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="mb-8 mb-md-11 rounded overflow-hidden grayscal-hover">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d248755.78021623226!2d80.06892628543156!3d13.04782226851664!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a5265ea4f7d3361%3A0x6e61a70b6863d433!2sChennai%2C%20Tamil%20Nadu!5e0!3m2!1sen!2sin!4v1605787834828!5m2!1sen!2sin" width="1200" height="550" style="border:0;width: 100%;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+        </div>
+    </div>
+
+{% endblock content %}

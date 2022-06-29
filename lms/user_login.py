@@ -49,3 +49,29 @@ def LOGIN(request):
 def LOGOUT(request):
     logout(request)
     return redirect('login')
+
+def PROFILE(request):
+    return render(request,'registration/profile.html')
+
+def PROFILEUPDATE(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        firstname = request.POST.get('first_name')
+        lastname = request.POST.get('last_name')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        userid = request.user.id
+
+        user = User.objects.get(id=userid)
+        user.first_name = firstname
+        user.last_name = lastname
+        user.email = email
+        user.username = username
+
+        if password != "" and password != None:
+            user.set_password(password)
+        user.save()
+        messages.success(request,"Profile Updated Successfully !")
+        return redirect('profile')
+        
+    return None
