@@ -18,6 +18,9 @@ from django.urls import path
 from lms import views
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('base/', views.BASE,name='base'),
     path('', views.HOME,name='home'),
+    path('base/', views.BASE,name='base'),
+    path('single/course/', views.SINGLE_COURSE,name='single_course'),
+    path('contact/', views.CONTACT,name='contact_us'),
+    path('about/', views.ABOUT,name='about_us'),
 ]
