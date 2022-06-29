@@ -45,3 +45,7 @@ def LOGIN(request):
             messages.error(request,'Email and Password Are Invalid !')
             return redirect('login')
     return None
+
+def LOGOUT(request):
+    logout(request)
+    return redirect('login')

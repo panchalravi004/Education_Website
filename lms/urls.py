@@ -26,5 +26,7 @@ urlpatterns = [
     path('about/', views.ABOUT,name='about_us'),
     path('accounts/',include('django.contrib.auth.urls')),
     path('accounts/register/',user_login.REGISTER,name='register'),
-    path('dologin/',user_login.LOGIN,name='dologin')
+    path('dologin/',user_login.LOGIN,name='dologin'),
+    path('logout/',user_login.LOGOUT,name='logout')
+
 ]
