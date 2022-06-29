@@ -37,7 +37,13 @@
 <body>
     <!--------HEADER-------->
     {% include 'components/header.html' %}
+    <!--------MODEL-------->
+    {% include 'components/model.html' %}
+    <!--------CONTENT-------->
+    {% block content %}
     
+
+    {% endblock content %}
     <!--------FOOTER-------->
     {% include 'components/footer.html' %}
     
