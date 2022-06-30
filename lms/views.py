@@ -44,7 +44,7 @@ def FILLTER_DATA(request):
     sort = request.GET.getlist('sort[]')
 
     print(sort)
-    
+
     if price ==["priceFree"]:
         course = Course.objects.filter(price=0)
 
@@ -74,3 +74,17 @@ def CONTACT(request):
     
 def ABOUT(request):
     return render(request,'Main/about_us.html')
+
+def SEARCH_COURSE(request):
+    
+    query = request.GET.get('query')
+
+    category = Categories.objects.all().order_by('id')[0:5]
+    course = Course.objects.filter(title__icontains = query)
+    print(course)
+    data = {
+        'course':course,
+        'category':category,
+    }
+
+    return render(request,'search/search.html',data)
