@@ -2,6 +2,35 @@
 {% load static %}
 {% block content %}
 {% load course_tags %}
+
+<script>
+    $(document).ready(function(){
+    
+        $(".filter-checkbox").on('click', function(){
+            var filter_object={};
+            $(".filter-checkbox").each(function(index,ele){
+                var filter_value=$(this).val();
+                var filter_key=$(this).data('filter');
+                console.log(filter_key,filter_value);
+                filter_object[filter_key]=Array.from(document.querySelectorAll('input[data-filter='+filter_key+']:checked')).map(function(el){
+                     return el.value;
+                });
+            });
+    
+            $.ajax({
+                url:'{% url "fillter_data" %}',
+                data:filter_object,
+                dataType:'json',
+                success:function(res){
+                    console.log(res)
+                    $("#filteredCourse").html(res.data);
+                    var filter_value=$(this).val();
+                    var filter_key=$(this).data('filter');
+                }
+            });
+        });
+    });
+    </script>
     <!-- PAGE TITLE
     ================================================== -->
     <header class="py-8 py-md-11" style="background-image: none;">
@@ -34,11 +63,11 @@
                 <div class="mb-4 mb-lg-0 ms-lg-6">
                     <div class="border rounded d-flex align-items-center choices-label h-50p">
                         <span class="ps-5">Sort by:</span>
-                        <select class="form-select form-select-sm text-dark border-0 ps-1 bg-transparent flex-grow-1 shadow-none dropdown-menu-end" data-choices>
-                            <option>Default</option>
-                            <option>New Courses</option>
-                            <option>Price Low to High</option>
-                            <option>Price High to low</option>
+                        <select  class="form-select form-select-sm text-dark border-0 ps-1 bg-transparent flex-grow-1 shadow-none dropdown-menu-end"  data-choices>
+                            <option data-filter="sort" value="Default">Default</option>
+                            <option data-filter="sort" value="NewCourse">New Courses</option>
+                            <option data-filter="sort" value="PriceLowHigh">Price Low to High</option>
+                            <option data-filter="sort" value="PriceHighLow">Price High to low</option>
                         </select>
                     </div>
                 </div>
@@ -82,7 +111,7 @@
                                 {% for i in category %}
     
                                     <li class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="category-{{i.id}}">
+                                        <input type="checkbox" class="custom-control-input filter-checkbox" id="category-{{i.id}}" data-filter="category" value="{{i.id}}">
                                         <label class="custom-control-label font-size-base" for="category-{{i.id}}">{{i.name}} ({{i.course_set.all.count}})</label>
                                     </li>
                                 
@@ -117,16 +146,16 @@
                         <div id="coursefiltercollapse3" class="collapse show mt-n2 px-6 pb-6" aria-labelledby="coursefilter3" data-parent="#courseSidebar">
                             <ul class="list-unstyled list-group list-checkbox">
                                 <li class="custom-control custom-radio">
-                                    <input type="radio" id="pricecustomradio1" name="customRadio" class="custom-control-input">
-                                    <label class="custom-control-label font-size-base" for="pricecustomradio1">All (18)</label>
+                                    <input type="radio" id="price-1" name="customRadio" class="custom-control-input filter-checkbox" data-filter="price" value="priceAll">
+                                    <label class="custom-control-label font-size-base" for="price-1">All ({{course.all.count}})</label>
                                 </li>
                                 <li class="custom-control custom-radio">
-                                    <input type="radio" id="pricecustomradio2" name="customRadio" class="custom-control-input">
-                                    <label class="custom-control-label font-size-base" for="pricecustomradio2">Free (3)</label>
+                                    <input type="radio" id="price-2" name="customRadio" class="custom-control-input filter-checkbox" data-filter="price" value="priceFree">
+                                    <label class="custom-control-label font-size-base" for="price-2">Free ({{freecourse_count}})</label>
                                 </li>
                                 <li class="custom-control custom-radio">
-                                    <input type="radio" id="pricecustomradio3" name="customRadio" class="custom-control-input">
-                                    <label class="custom-control-label font-size-base" for="pricecustomradio3">Paid (15)</label>
+                                    <input type="radio" id="price-3" name="customRadio" class="custom-control-input filter-checkbox" data-filter="price" value="pricePaid">
+                                    <label class="custom-control-label font-size-base" for="price-3">Paid ({{paidcourse_count}})</label>
                                 </li>
                             </ul>
                         </div>
@@ -158,7 +187,7 @@
                             <ul class="list-unstyled list-group list-checkbox">
                                 {% for i in level %}
                                     <li class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="level-{{i.id}}">
+                                        <input type="checkbox" class="custom-control-input filter-checkbox" id="level-{{i.id}}" data-filter="level" value="{{i.id}}">
                                         <label class="custom-control-label font-size-base" for="level-{{i.id}}">{{i.name}} ({{i.course_set.all.count}})</label>
                                     </li>
                                 {% endfor %}
@@ -174,7 +203,7 @@
             </div>
 
             <div class="col-xl-8">
-                <div class="row row-cols-md-2 mb-3 ">
+                <div class="row row-cols-md-2 mb-3 " id="filteredCourse">
                     {% for i in course %}
                         <div class="col-md pb-4 pb-md-7">
                             <!-- Card -->
@@ -272,10 +301,16 @@
                                                 </ul>
                                             </div>
 
-                                            <div class="col-auto px-2 text-right">
-                                                <del class="font-size-sm">Rs. {{i.price}}</del>
-                                                <ins class="h4 mb-0 d-block mb-lg-n1">Rs. {% discount_calculation i.price i.discount %}</ins>
-                                            </div>
+                                            {% if i.price == 0 %}
+                                                <div class="col-auto px-2 text-right">
+                                                    <ins class="font-size-sm badge badge-primary text-light">Free</int>
+                                                </div>
+                                            {% else %}
+                                                <div class="col-auto px-2 text-right">
+                                                    <del class="font-size-sm">Rs. {{i.price}}</del>
+                                                    <ins class="h4 mb-0 d-block mb-lg-n1">Rs. {% discount_calculation i.price i.discount %}</ins>
+                                                </div>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>

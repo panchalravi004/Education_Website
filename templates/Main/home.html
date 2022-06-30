@@ -166,10 +166,16 @@
                                                     </ul>
                                                 </div>
 
-                                                <div class="col-auto px-2 text-right">
-                                                    <del class="font-size-sm">Rs. {{c.price}}</del>
-                                                    <ins class="h4 mb-0 d-block mb-lg-n1">Rs. {% discount_calculation c.price c.discount %}</ins>
-                                                </div>
+                                                {% if c.price == 0 %}
+                                                    <div class="col-auto px-2 text-right">
+                                                        <ins class="font-size-sm badge badge-primary text-light">Free</ins>
+                                                    </div>
+                                                {% else %}
+                                                    <div class="col-auto px-2 text-right">
+                                                        <del class="font-size-sm">Rs. {{c.price}}</del>
+                                                        <ins class="h4 mb-0 d-block mb-lg-n1">Rs. {% discount_calculation c.price c.discount %}</ins>
+                                                    </div>
+                                                {% endif %}
                                             </div>
                                         </div>
                                     </div>
