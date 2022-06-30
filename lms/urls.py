@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from lms import views, user_login
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,4 +32,5 @@ urlpatterns = [
     path('logout/',user_login.LOGOUT,name='logout'),
     path('accounts/profile/',user_login.PROFILE,name='profile'),
     path('accounts/profile/update',user_login.PROFILEUPDATE,name='profile_update'),
-]
+]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+

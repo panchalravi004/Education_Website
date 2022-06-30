@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
-from app.models import Categories
+from app.models import Categories, Course
 
 def BASE(request):
     return render(request,'base.html')
@@ -8,8 +8,11 @@ def BASE(request):
 def HOME(request):
 
     category = Categories.objects.all().order_by('id')[0:5]
+    course = Course.objects.filter(status="PUBLISH").order_by('-id')
+    
     data = {
-        'category':category
+        'category':category,
+        'course':course,
     }
     return render(request,'Main/home.html',data)
 
