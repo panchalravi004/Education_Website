@@ -1,5 +1,5 @@
 from django.contrib import admin
-from app.models import Author, Categories, Course
+from app.models import Author, Categories, Course, Levels
 
 # Register your models here.
 class CategoriesAdmin(admin.ModelAdmin):
@@ -7,3 +7,4 @@ class CategoriesAdmin(admin.ModelAdmin):
 admin.site.register(Categories,CategoriesAdmin)
 admin.site.register(Course)
 admin.site.register(Author)
+admin.site.register(Levels)

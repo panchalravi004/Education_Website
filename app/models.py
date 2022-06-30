@@ -1,5 +1,6 @@
 from distutils.command.upload import upload
 from django.db import models
+from django.forms import CharField
 
 # Create your models here.
 class Categories(models.Model):
@@ -9,11 +10,19 @@ class Categories(models.Model):
     def __str__(self):
         return self.name
 
+    def get_all_category(self):
+        return Categories.objects.all().order_by('-id')
+
 class Author(models.Model):
     author_profile = models.ImageField(upload_to='author')
     name = models.CharField(max_length=100,null=True)
     about_author = models.TextField()
 
+    def __str__(self):
+        return self.name
+
+class Levels(models.Model):
+    name = models.CharField(max_length=100)
     def __str__(self):
         return self.name
 
@@ -30,6 +39,7 @@ class Course(models.Model):
     created_at = models.DateField(auto_now_add=True)
     author = models.ForeignKey(Author,on_delete=models.CASCADE,null=True)
     category = models.ForeignKey(Categories,on_delete=models.CASCADE)
+    level = models.ForeignKey(Levels,on_delete=models.CASCADE,null=True)
     description = models.TextField()
     price = models.IntegerField(null=True,default=0)
     discount = models.IntegerField(null=True)
