@@ -168,7 +168,10 @@ def CHECKOUT(request,slug):
             email = request.POST.get('billing_email')
             order_comments = request.POST.get('order_comments')
 
-            amount = (course.price * 100)
+            amount_cal = course.price - (course.price * course.discount / 100)
+            amount = int(amount_cal) * 100
+
+
             currency = "INR"
             notes = {
                 "name":f'{first_name} {last_name}',
