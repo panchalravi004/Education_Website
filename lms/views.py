@@ -1,7 +1,8 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, JsonResponse
-from app.models import Categories, Course, Levels
+from app.models import Categories, Course, Levels, Video
 from django.template.loader import render_to_string
+from django.db.models import Sum
 
 def BASE(request):
     return render(request,'base.html')
@@ -70,10 +71,43 @@ def FILLTER_DATA(request):
     return JsonResponse({'data': t})
 
 def CONTACT(request):
-    return render(request,'Main/contact_us.html')
+    category = Categories.objects.all().order_by('id')[0:5]
+    data = {
+        'category':category,
+    }
+
+    return render(request,'Main/contact_us.html',data)
     
 def ABOUT(request):
-    return render(request,'Main/about_us.html')
+    category = Categories.objects.all().order_by('id')[0:5]
+    data = {
+        'category':category,
+    }
+    return render(request,'Main/about_us.html',data)
+
+def COURSE_DETAIL(request,slug):
+
+    course = Course.objects.filter(slug=slug)
+    category = Categories.objects.all().order_by('id')[0:5]
+    time_duration = Video.objects.filter(course__slug=slug).aggregate(sum=Sum('time_duration'))
+
+    if course.exists():
+        data = {
+            'course':course.first,
+            'category':category,
+            'time_duration':time_duration,
+        }
+
+        return render(request,'course/course_details.html',data)
+    else:
+        return redirect('404')
+
+def PAGE_NOT_FOUND(request):
+    category = Categories.objects.all().order_by('id')[0:5]
+    data = {
+        'category':category,
+    }
+    return render(request,'error/error.html',data)
 
 def SEARCH_COURSE(request):
     
