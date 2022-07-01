@@ -26,6 +26,7 @@ urlpatterns = [
     path('courses/', views.SINGLE_COURSE,name='single_course'),
     path('course/fillter-data', views.FILLTER_DATA,name='fillter_data'),
     path('course/<slug>', views.COURSE_DETAIL,name='course_detail'),
+    path('mycourse/', views.MYCOURSE,name='mycourse'),
     path('search/', views.SEARCH_COURSE,name='search_course'),
     path('contact/', views.CONTACT,name='contact_us'),
     path('about/', views.ABOUT,name='about_us'),
@@ -36,5 +37,8 @@ urlpatterns = [
     path('accounts/profile/',user_login.PROFILE,name='profile'),
     path('accounts/profile/update',user_login.PROFILEUPDATE,name='profile_update'),
     path('404/',views.PAGE_NOT_FOUND,name='404'),
+    path('checkout/<slug>',views.CHECKOUT,name='checkout'),
+    path('verify_payment',views.VERIFY_PAYMENT,name='verify_payment')
+
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
 

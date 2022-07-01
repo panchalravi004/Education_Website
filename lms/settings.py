@@ -144,3 +144,6 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'shadowattacker24@gmail.com'
 EMAIL_HOST_PASSWORD = 'xaegyljrobyamexi'
+
+KEY_ID = 'rzp_test_jTfXNi6r1KcPOU'
+KEY_SECRET = 'DCOloUbmjuKnc469Z2FIqJVa'

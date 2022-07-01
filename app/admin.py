@@ -1,5 +1,5 @@
 from django.contrib import admin
-from app.models import Author, Categories, Course, Levels, Requirements, What_you_learn, Lesson, Video, Language
+from app.models import Author, Categories, Course, Levels, Payment, Requirements, UserCourse, What_you_learn, Lesson, Video, Language
 
 # Register your models here.
 class CategoriesAdmin(admin.ModelAdmin):
@@ -30,3 +30,5 @@ admin.site.register(Requirements)
 admin.site.register(Lesson)
 admin.site.register(What_you_learn)
 admin.site.register(Language)
+admin.site.register(UserCourse)
+admin.site.register(Payment)
